@@ -3,6 +3,20 @@ import { auth } from './firebase_config.js';
 import { set, ref, push, get, remove, update } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
 import {signOut, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
+function addCategory(categoryName) {
+    const categoryId = `category${Date.now()}`; // Gera um ID único baseado no timestamp
+    const categoryRef = ref(db, 'categories/' + categoryId);
+    
+    set(categoryRef, {
+        name: categoryName,
+        tasks: {} // Inicia com um objeto vazio para as tarefas
+    }).then(() => {
+        console.log('Categoria adicionada com sucesso!');
+    }).catch((error) => {
+        console.error('Erro ao adicionar categoria: ', error);
+    });
+}
+
 let categories = [
   {
     title: "Pessoal",
@@ -17,6 +31,32 @@ let tasks = [
     completed: false,
   }
 ];
+
+onAuthStateChanged(auth, (user) => {
+
+  document.getElementById('userDisplayName').innerText = user.displayName;
+  
+  const imageUrl = user.photoURL;
+  
+  console.log(user)
+  console.log(user.displayName)
+  console.log(imageUrl)
+  
+  document.getElementById('imgUser').src = imageUrl;
+
+  
+  if (!user) {
+      // Exibe o nome do usuário
+  
+      window.location.href = 'login.html';
+
+  } else {
+      // Se o usuário não estiver autenticado, redireciona para a página de login
+      document.getElementById('userDisplayName').innerText = user.displayName;
+
+      // ReadTask(); 
+  }
+});
 
 // Define functions
 const saveLocal = () => {
