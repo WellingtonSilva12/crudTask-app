@@ -46,13 +46,14 @@ body {
 
 .screen-backdrop {
     width: 145%;
-    height: 25rem;
+    height: 30rem;
     position: absolute;
     top: -75px;
     left: 30%;
     transform: translateX(-50%);
     border-radius: 0 0 50% 50%;
-    background-color: #9672FB;
+    /* background-color: #9672FB; */
+    background-image: url(backdrop.svg);
     z-index: -1;
     transition: all 0.3s;
 }
@@ -79,6 +80,7 @@ body {
     color: #ffffff;
     display: flex;
     justify-content: space-between;
+    margin-bottom: 2rem;
 }
 
 .welcome {
@@ -91,6 +93,7 @@ body {
 .welcome h1 {
     font-size: 1.5rem;
     letter-spacing: 1.1px;
+    margin-bottom: 5px;
 }
 
 .welcome p {
@@ -104,47 +107,59 @@ body {
 }
 
 .welcome .img img {
-    width: 5rem;
+    width: 4rem;
     border: 3px solid #fff;
 }
 
 .categories-wrapper {
-    margin-top: 1rem;
-    padding: 0 30px;
+    margin-top: 1.5rem;
+    padding: 15px 30px;
     height: 100%;
     padding-bottom: 20px;
     border-radius: 25px;
     overflow: auto;
-    background-color: #fff;
+    background-color: #F2F5FF;
+    box-shadow: 0px -10px 15px -3px rgba(0,0,0,0.1);
 }
 
 .add-category {
     display: flex;
     gap: 10px;
     margin-top: 20px;
-  }
+}
   
   .add-category input {
     flex: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 10px 10px 10px 23px;
+    border: 1px solid #F2F5FF;
+    border-radius: 1.2rem;
     font-size: 16px;
+    background-color: transparent;
+    color: #fff;
+    outline: none;
+    letter-spacing: 1.5px;
+
+}
+  .add-category input::placeholder {
+    color: #F2F5FF;
+    letter-spacing: 1.5px;
   }
+
+
   
   .add-category button {
     padding: 10px 20px;
-    background-color: #39a6f0;
-    color: #fff;
+    background-color: #F2F5FF;
+    color: #3a49f9;
     border: none;
-    border-radius: 5px;
+    border-radius: 1.5rem;
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.3s;
   }
   
   .add-category button:hover {
-    background-color: #2e90d4;
+    background-color: #ebe2f0;
   }
 
   .category .delete-category {
@@ -152,9 +167,9 @@ body {
     height: 2rem;
     padding: 0.5rem;
     border-radius: 50%;
-    color: red;
+    color: #7c3af9;
     cursor: pointer;
-    background-color: rgba(255, 0, 0, 0.1);
+    background-color: #ebe2f07d;
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s;
@@ -167,7 +182,7 @@ body {
   
   .category .delete-category:hover {
     color: #fff;
-    background-color: red;
+    background-image: linear-gradient(180deg, #9c2cf3, #3a49f9);
   }
   
   
@@ -180,13 +195,13 @@ body {
 }
 
 .category {
-    background: #fff;
-    border-radius: 0.5rem;
+    background: #FFFFFF;
+    border-radius: 1.2rem;
     padding: 1.5rem 1rem;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
-    box-shadow: 0 10px 20px 5px #00000023;
+    box-shadow: 0px 0px 15px -3px rgba(0,0,0,0.1);
     transition: all 0.3s;
 
 }
@@ -208,16 +223,16 @@ body {
 
 .category .content h1 {
     font-size: 1.5rem;
-    color: #2c2c2c;
+    color: #242736;
     opacity: .8
     ;
 
 }
 
 .category .content p {
-    color: #2e2e2e;
+    color: #AEAEB3;
     font-size: 0.8rem;
-    opacity: 0.6;
+    letter-spacing: 1.1px;
 }
 
 .category .options {
@@ -344,6 +359,10 @@ body {
     color: #fff;
 }
 
+.task p {
+    padding-right: 2rem;
+}
+
 .task input:checked~p {
     text-decoration: line-through;
     opacity: 0.6;
@@ -368,15 +387,16 @@ body {
 }
 
 .task-wrapper .delete:hover {
-    color: red;
+    color: #3a49f9;
     background-color: rgba(0, 0, 0, 0.1);
 }
 
 .no-tasks {
     margin-top: 5rem;
     text-align: center;
-    font-size: 1.5rem;
-    opacity: 0.6;
+    font-size: 1.2rem;
+    opacity: 0.5;
+    margin-inline: 1.5rem;
 }
 
 /* Add Task */
@@ -387,12 +407,14 @@ body {
     transform: translateX(-50%);
     width: 3.5rem;
     height: 3.5rem;
-    border-radius: 50%;
+    border-radius: 1rem;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #9672FB;
+    /* background-color: #9672FB; */
+    background-image: linear-gradient(180deg, #9c2cf3, #3a49f9);
+
     transition: all 0.3s;
 }
 
@@ -406,7 +428,7 @@ body {
 }
 
 .add-task-btn i {
-    font-size: 3rem;
+    font-size: 2.3rem;
     color: #fff;
 }
 
@@ -438,10 +460,14 @@ body {
 .input-group input,
 .input-group select {
     width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
+    border: 1px solid #bfc8e8;
+    border-radius: 1.2rem;
+    padding: 10px 20px;
     font-size: 16px;
+    background-color: #ffffff;
+    letter-spacing: 1.1px;
+    outline: none;
+
 }
 
 .input-group label {
@@ -449,9 +475,14 @@ body {
     padding: 0 5px;
     margin-top: 5px;
     font-size: 14px;
-    color: #666;
+    color: #2E3A59;
     margin-bottom: 5px;
 }
+
+.input-group input {
+    background-color: #ffffff;
+}
+
 
 .btns {
     display: flex;
@@ -471,6 +502,16 @@ body {
     z-index: 1;
 }
 
+.btns .cancel-btn {
+    background-color: #FFFFFF;
+    color: #2E3A59;
+}
+
+.btns .add-btn {
+    background-color: #7c3af9;
+    color: #fff;
+}
+
 button.add-btn {
     background-color: #39a6f0;
     color: #fff
@@ -484,7 +525,7 @@ button.add-btn {
     width: 100%;
     height: 15rem;
     border-radius: 25px 25px 0 0;
-    background-color: #fff;
+    background-color: #F2F5FF;
 }
 
 .black-backdrop {
