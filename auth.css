@@ -29,9 +29,9 @@ body {
 @media (min-width:768px) {
     .wrapper {
         height: 50rem;
-        width: 100%;
+        width: 25rem;
         border-radius: 40px;
-        border: 5px solid #2e2e2e;
+        border: 10px solid #2e2e2e;
         padding: 30px;
     }
 }
