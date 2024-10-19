@@ -278,6 +278,8 @@ const renderTasks = () => {
         const index = tasks.findIndex((t) => t.id === task.id);
         tasks.splice(index, 1);
         saveLocal();
+        
+        deleteTaskFromFirebase(task.id);
         renderTasks();
       });
     });
@@ -299,15 +301,6 @@ const loadTasksFromFirebase = async () => {
     console.log("Nenhuma tarefa encontrada no Firebase.");
   }
 };
-
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    loadTasksFromFirebase();
-  } else {
-    console.log("Usuário não autenticado.");
-  }
-});
-
 
 
 onAuthStateChanged(auth, (user) => {
@@ -336,17 +329,19 @@ const addTask = async (e) => {
   }
 
   const newTask = {
-    id: Date.now(),
     task,
     category,
     completed: false,
   };
 
-  // Salva no Firebase sob o nó do usuário
   try {
     const taskRef = ref(db, `users/${auth.currentUser.uid}/tasks`);
-    await push(taskRef, newTask);
-    tasks.push(newTask);
+    const newTaskRef = await push(taskRef, newTask);
+
+    const taskId = newTaskRef.key;  // Armazene a key gerada pelo Firebase
+    console.log("Tarefa criada com sucesso! ID da tarefa:", taskId);
+
+    tasks.push({ ...newTask, id: taskId });  // Armazene a key no array local
     saveLocal();
     toggleAddTaskForm();
     renderTasks();
@@ -356,6 +351,24 @@ const addTask = async (e) => {
 
   taskInput.value = "";
 };
+
+
+
+
+
+const deleteTaskFromFirebase = async (taskId) => {
+  try {
+    const taskRef = ref(db, `users/${auth.currentUser.uid}/tasks/${taskId}`);
+    await remove(taskRef);
+    console.log(`Tarefa com ID ${taskId} removida do Firebase.`);
+  } catch (error) {
+    console.error("Erro ao remover a tarefa do Firebase:", error);
+  }
+};
+
+
+
+
 
 
 
@@ -423,13 +436,16 @@ logoutButton.addEventListener('click', LogoutUser);
 onAuthStateChanged(auth, (user) => {
 
   document.getElementById('userDisplayName').innerText = user.displayName;
-  
   const imageUrl = user.photoURL;
-  
-  console.log(user)
-  
   document.getElementById('imgUser').src = imageUrl;
   renderCategories()
+  
+  console.log(user)
+
+ 
+
+
+  
 
   
   if (!user) {
