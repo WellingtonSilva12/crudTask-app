@@ -15,6 +15,7 @@ body {
     align-items: center;
     justify-content: center;
     font-family: "Space Grotesk", sans-serif;
+    overflow: hidden;
 }
 
 .wrapper {
@@ -28,7 +29,7 @@ body {
 @media (min-width:768px) {
     .wrapper {
         height: 50rem;
-        width: 25rem;
+        width: 100%;
         border-radius: 40px;
         border: 5px solid #2e2e2e;
         padding: 30px;
@@ -39,6 +40,8 @@ body {
     display: flex;
     flex-direction: column;
     margin-top: 50px;
+    width: 100%;
+
     /* position: relative; */
     /* justify-content: center; */
 }
@@ -51,13 +54,13 @@ body {
 }
 
 .login h1 {
-    color: #9672FB;
+    color: #9c2cf3;
     margin-bottom: 25px;
     letter-spacing: 1.2pt;
     font-size: 1.8rem;
 }
 .login p {
-    color: #7c818a;
+    color: #2E3A59;
     padding: 1.5rem 1.2rem 8rem 1.2rem;
     letter-spacing: 1pt;
     font-size: .9rem;
@@ -67,12 +70,12 @@ body {
     width: 150%;
     height: 25rem;
     position: absolute;
-    top: 650px;
+    top: 38rem;
     z-index: -1;
-    left: 50%;
+    left: 60%;
     transform: translateX(-50%);
     border-radius: 50% 50% 0 0;
-    background-color: #9672FB;
+    background-image: url(backdrop.svg);
 }
 
 .container .form{
@@ -86,12 +89,16 @@ body {
 }
 
 .form input {
-    padding: 15px 20px;
+    padding: 15px 25px;
     border-radius: 12px;
-    border: 2px solid #e2e2e2;
+    border: 2px solid #E5EAFC;
     font-size: 14px;
     width: 100%;
-    
+
+}
+.form input::placeholder {
+    letter-spacing: 1.1px;
+    color: #BFC8E8;
 }
 
 .form #password{
@@ -102,13 +109,22 @@ body {
 .form button {
     padding: 15px 0;
     border-radius: 12px;
-    margin-top: 15px;
+    margin-top: 10px;
     border: none;
     font-size: 1rem;
-    background: #9672FB;
     color: #fff;
     font-weight: 600;
     letter-spacing: 1.2px;
+}
+
+.form #sign_in {
+    background-image: linear-gradient(180deg, #9c2cf3, #3a49f9);
+}
+
+.form #google_login {
+    background-color: #E5EAFC;
+    color: #2E3A59;
+
 }
 
 .password-container {
@@ -124,5 +140,5 @@ body {
     right: 15px;
     cursor: pointer;
     font-size: 1.5rem;
-    color: #888; /* Cor do ícone */
+    color: #BFC8E8; /* Cor do ícone */
 }

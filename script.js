@@ -434,31 +434,20 @@ const logoutButton = document.querySelector('.exit');
 logoutButton.addEventListener('click', LogoutUser);
 
 onAuthStateChanged(auth, (user) => {
+  if (user) {
+    const userDisplayNameElement = document.getElementById('userDisplayName');
+    const imgUserElement = document.getElementById('imgUser');
 
-  document.getElementById('userDisplayName').innerText = user.displayName;
-  const imageUrl = user.photoURL;
-  document.getElementById('imgUser').src = imageUrl;
-  renderCategories()
-  
-  console.log(user)
+    if (userDisplayNameElement && imgUserElement) {
+      userDisplayNameElement.innerText = user.displayName;
+      imgUserElement.src = user.photoURL;
+    }
 
- 
-
-
-  
-
-  
-  if (!user) {
-      // Exibe o nome do usuário
-  
-      window.location.href = 'login.html';
-
+    renderCategories();
+    loadCategoriesFromFirebase();
+    loadTasksFromFirebase();
   } else {
-      // Se o usuário não estiver autenticado, redireciona para a página de login
-      document.getElementById('userDisplayName').innerText = user.displayName;
-      loadCategoriesFromFirebase();
-      loadTasksFromFirebase();
-
-      // ReadTask(); 
+    window.location.href = 'login.html';
   }
 });
+
