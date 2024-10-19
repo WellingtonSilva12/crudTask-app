@@ -44,6 +44,7 @@ const saveCategoryToFirebase = async (newCategory) => {
     const newCategoryRef = await push(categoryRef, newCategory);
     newCategory.id = newCategoryRef.key;  // Adiciona o ID gerado pelo Firebase
     console.log("Categoria salva no Firebase com ID:", newCategory.id);
+    renderCategories()
   } catch (error) {
     console.error("Erro ao salvar a categoria no Firebase:", error);
   }
@@ -102,6 +103,7 @@ const loadCategoriesFromFirebase = async () => {
 onAuthStateChanged(auth, (user) => {
   if (user) {
     loadCategoriesFromFirebase();
+    renderCategories();
   } else {
     console.log("Usuário não autenticado.");
   }
