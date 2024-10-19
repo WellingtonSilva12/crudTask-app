@@ -278,11 +278,14 @@ const renderTasks = () => {
       const deleteBtn = div.querySelector(".delete");
       deleteBtn.addEventListener("click", () => {
         const index = tasks.findIndex((t) => t.id === task.id);
-        tasks.splice(index, 1);
-        saveLocal();
-        
-        deleteTaskFromFirebase(task.id);
-        renderTasks();
+        if (index !== -1 && task.id) {
+          tasks.splice(index, 1);
+          saveLocal();
+          deleteTaskFromFirebase(task.id);  // Certifique-se de que o task.id está definido aqui
+          renderTasks();
+        } else {
+          console.error("Erro: ID da tarefa indefinido ou tarefa não encontrada.");
+        }
       });
     });
 
@@ -292,17 +295,29 @@ const renderTasks = () => {
 };
 
 const loadTasksFromFirebase = async () => {
-  const taskRef = ref(db, `users/${auth.currentUser.uid}/tasks`);
-  const snapshot = await get(taskRef);
-  
-  if (snapshot.exists()) {
-    tasks = Object.values(snapshot.val());
-    saveLocal(); // Opcional: salvar no localStorage
-    renderTasks(); // Renderiza as tarefas carregadas
-  } else {
-    console.log("Nenhuma tarefa encontrada no Firebase.");
+  try {
+    const taskRef = ref(db, `users/${auth.currentUser.uid}/tasks`);
+    const snapshot = await get(taskRef);
+    
+    if (snapshot.exists()) {
+      const tasksFromFirebase = snapshot.val();
+      
+      // Mapeando as tarefas para incluir o ID
+      tasks = Object.keys(tasksFromFirebase).map(taskId => ({
+        ...tasksFromFirebase[taskId],
+        id: taskId,  // Incluindo o ID no objeto da tarefa
+      }));
+
+      saveLocal();  // Salvando as tarefas com o ID no localStorage
+      renderTasks(); // Renderizando as tarefas carregadas
+    } else {
+      console.log("Nenhuma tarefa encontrada no Firebase.");
+    }
+  } catch (error) {
+    console.error("Erro ao carregar as tarefas do Firebase:", error);
   }
 };
+
 
 
 onAuthStateChanged(auth, (user) => {
@@ -340,11 +355,11 @@ const addTask = async (e) => {
     const taskRef = ref(db, `users/${auth.currentUser.uid}/tasks`);
     const newTaskRef = await push(taskRef, newTask);
 
-    const taskId = newTaskRef.key;  // Armazene a key gerada pelo Firebase
+    const taskId = newTaskRef.key;  // Obter o ID gerado pelo Firebase
     console.log("Tarefa criada com sucesso! ID da tarefa:", taskId);
 
-    tasks.push({ ...newTask, id: taskId });  // Armazene a key no array local
-    saveLocal();
+    tasks.push({ ...newTask, id: taskId });  // Adiciona o ID ao array local
+    saveLocal();  // Salva as tarefas localmente, incluindo o ID
     toggleAddTaskForm();
     renderTasks();
   } catch (error) {
@@ -357,16 +372,24 @@ const addTask = async (e) => {
 
 
 
-
 const deleteTaskFromFirebase = async (taskId) => {
-  try {
-    const taskRef = ref(db, `users/${auth.currentUser.uid}/tasks/${taskId}`);
-    await remove(taskRef);
-    console.log(`Tarefa com ID ${taskId} removida do Firebase.`);
-  } catch (error) {
-    console.error("Erro ao remover a tarefa do Firebase:", error);
+  // Exibe a mensagem de confirmação
+  const isConfirmed = confirm("Tem certeza de que deseja excluir esta tarefa?");
+
+  if (isConfirmed && taskId) {
+    try {
+      const taskRef = ref(db, `users/${auth.currentUser.uid}/tasks/${taskId}`);
+      await remove(taskRef);
+      console.log(`Tarefa com ID ${taskId} removida do Firebase.`);
+    } catch (error) {
+      console.error("Erro ao remover a tarefa do Firebase:", error);
+    }
+  } else {
+    console.log("A exclusão da tarefa foi cancelada ou o ID da tarefa está indefinido.");
   }
 };
+
+
 
 
 
